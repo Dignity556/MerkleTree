@@ -1,5 +1,8 @@
 package DataStructures;
 
+import Utils.UtilFuncs;
+
+import javax.rmi.CORBA.Util;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -22,7 +25,7 @@ public class MerkleTree {
         for(int i=0;i<transactions.size();i++)
         {
             merkleTree.add(transactions.get(i).getId());
-            previousLayer.add(calculateHash(transactions.get(i).getId()));
+            previousLayer.add(UtilFuncs.calculateHash(transactions.get(i).getId()));
         }
         merkleTree.addAll(previousLayer);
 
@@ -33,7 +36,7 @@ public class MerkleTree {
                 String left = previousLayer.get(i);
                 String right = (i + 1 < previousLayer.size()) ? previousLayer.get(i + 1) : left;
 
-                String parent = calculateHash(left + right);
+                String parent = UtilFuncs.calculateHash(left + right);
                 currentLayer.add(parent);
             }
             previousLayer = currentLayer;
@@ -43,27 +46,7 @@ public class MerkleTree {
 
     }
 
-    private String calculateHash(String input) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hashBytes = digest.digest(input.getBytes(StandardCharsets.UTF_8));
 
-            StringBuilder hexString = new StringBuilder();
-            for (byte hashByte : hashBytes) {
-                String hex = Integer.toHexString(0xff & hashByte);
-                if (hex.length() == 1) {
-                    hexString.append('0');
-                }
-                hexString.append(hex);
-            }
-
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-
-        return "";
-    }
 
     public List<Transaction> getTransactions() {
         return transactions;

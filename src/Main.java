@@ -1,12 +1,14 @@
+import DataStructures.Edge;
 import DataStructures.MerkleTree;
 import DataStructures.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
+import DataStructures.Graph;
 
 public class Main {
     public static void main(String[] args) {
-        List<Transaction> transactions = new ArrayList<>();
+        ArrayList<Transaction> transactions = new ArrayList<>();
         transactions.add(new Transaction("1","1698630724","50","1.2","A","B"));
         transactions.add(new Transaction("2","1698630724","75","1.6","A","C"));
         transactions.add(new Transaction("3","1698630724","30","1.1","C","D"));
@@ -14,6 +16,9 @@ public class Main {
         transactions.add(new Transaction("5","1698630724","43","1.23","D","A"));
 
         MerkleTree merkleTree = new MerkleTree(transactions);
+        Graph g=new Graph();
+        ArrayList<Edge> edges=g.tx_to_graph(transactions);
+        System.out.println(edges.size());
         System.out.println("Merkle Tree: "+merkleTree.getMerkleTree().size());
     }
 }
