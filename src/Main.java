@@ -1,10 +1,8 @@
-import DataStructures.Edge;
-import DataStructures.MerkleTree;
-import DataStructures.Transaction;
+import DataStructures.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import DataStructures.Graph;
 
 public class Main {
     public static void main(String[] args) {
@@ -20,5 +18,15 @@ public class Main {
         ArrayList<Edge> edges=g.tx_to_graph(transactions);
         System.out.println(edges.size());
         System.out.println("Merkle Tree: "+merkleTree.getMerkleTree().size());
+        MerkleGraphTree mgt=new MerkleGraphTree();
+        HashMap<String,ArrayList<Edge>> map=mgt.start_node_merge(transactions);
+        for (String key: map.keySet()){
+            int i=0;
+            while (map.get(key).size() > i)
+            {
+                System.out.println("Key:"+key+" Value:"+map.get(key).get(i).getEnd_node().getNode_id());
+                i+=1;
+            }
+        }
     }
 }
